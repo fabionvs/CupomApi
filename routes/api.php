@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
-
+use App\Http\Controllers\FilialController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -25,3 +25,4 @@ Route::middleware('auth:api')->group(function () {
 Route::get('auth/google', [AuthController::class, 'googleLoginUrl']);
 Route::get('auth/google/callback', [AuthController::class, 'loginCallback']);
 
+Route::get('/list/public', [FilialController::class, 'listPublic']);

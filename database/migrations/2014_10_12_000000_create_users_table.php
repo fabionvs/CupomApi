@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('dt_aniversario')->nullable();
             $table->string('cpf')->unique()->nullable();
             $table->string('email')->nullable();
-            $table->string('google_id');
+            $table->string('google_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
