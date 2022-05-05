@@ -7,6 +7,7 @@ use App\Models\Filial;
 use App\Models\Empresa;
 use App\Models\Promocao;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -17,7 +18,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-        $user = User::create(['username' => 'burgernuts', 'nm_nome' => 'Burger Nuts SA', 'email' => 'teste@teste.com']);
+        $user = User::create(['username' => 'teste@teste.com', 'nm_nome' => 'Burger Nuts SA', 'email' => 'teste@teste.com', 'password' => Hash::make('123456')]);
         $empresa = Empresa::create(['nm_nome' => 'Burger Nuts', 'nr_cnpj' => '0123121231232', 'logo' => 'https://img.freepik.com/vetores-gratis/logotipo-burger_1366-144.jpg', 'user_id' => $user->id]);
         $filial = Filial::create(['latitude' => '-15.8169455', 'longitude' => '-47.900049', 'empresa_id' => $empresa->id, 'categoria' => 'Hamburgueria Artesanal']);
         $filial = Filial::create(['latitude' => '-16.8169455', 'longitude' => '-48.900049', 'empresa_id' => $empresa->id, 'categoria' => 'Almoço/Janta']);

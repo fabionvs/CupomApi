@@ -17,10 +17,9 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('nm_nome')->nullable();
-            $table->string('dt_aniversario')->nullable();
-            $table->string('cpf')->unique()->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->nullable()->unique();
             $table->string('google_id')->nullable();
+            $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });

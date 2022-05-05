@@ -25,6 +25,12 @@ class CreateCuponsTable extends Migration
             $table->timestamps();
         });
 
+        Schema::create('tb_categorias', function (Blueprint $table) {
+            $table->id();
+            $table->string('nm_categoria')->unique();
+            $table->timestamps();
+        });
+
         Schema::create('tb_filial', function (Blueprint $table) {
             $table->id();
             $table->string('latitude')->unique();
@@ -34,6 +40,9 @@ class CreateCuponsTable extends Migration
             $table->bigInteger('empresa_id')->unsigned()->index();
             $table->foreign('empresa_id')->references('id')->on('tb_empresa')->onUpdate('cascade')->onDelete('cascade');
 
+            $table->bigInteger('categoria_id')->unsigned()->index();
+            $table->foreign('categoria_id')->references('id')->on('tb_categoria')->onUpdate('cascade')->onDelete('cascade');
+
             $table->timestamps();
         });
         Schema::create('tb_promocao', function (Blueprint $table) {
@@ -42,6 +51,7 @@ class CreateCuponsTable extends Migration
             $table->string('cd_cupom')->unique();
             $table->string('nr_porcentagem');
             $table->boolean('st_ativo')->default(false);
+            $table->timestamp('dt_vencimento')->nullable();
             $table->timestamps();
 
             $table->bigInteger('filial_id')->unsigned()->index();
