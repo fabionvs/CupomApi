@@ -21,13 +21,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'username',
-        'ldap',
         'nm_nome',
         'dt_aniversario',
-        'cd_cpf',
-        'nm_email',
-        'nm_ul',
-        'cd_ul'
+        'cpf',
+        'email',
+        'google_id'
     ];
 
     /**
@@ -45,7 +43,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'ldap' => 'array'
     ];
 
     /**

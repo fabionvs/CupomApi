@@ -16,13 +16,11 @@ class CreateUsersTable extends Migration
         Schema::create('tb_users', function (Blueprint $table) {
             $table->id();
             $table->string('username')->unique();
-            $table->json('ldap');
             $table->string('nm_nome')->nullable();
             $table->string('dt_aniversario')->nullable();
-            $table->string('cd_cpf')->unique()->nullable();
-            $table->string('nm_email')->nullable();
-            $table->string('nm_ul')->nullable();
-            $table->string('cd_ul')->nullable();
+            $table->string('cpf')->unique()->nullable();
+            $table->string('email')->nullable();
+            $table->string('google_id');
             $table->rememberToken();
             $table->timestamps();
         });

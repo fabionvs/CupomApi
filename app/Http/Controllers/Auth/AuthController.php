@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
-use App\Http\Services\UserService;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Exception;
@@ -14,6 +13,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Laravel\Passport\Passport;
 use Validator;
+use Socialite;
+use Illuminate\Support\Facades\Redirect;
 
 class AuthController extends Controller
 {
@@ -23,136 +24,43 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct(UserService $userService)
+    public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'checkUser']]);
-        $this->userService = $userService;
+        $this->middleware('auth:api', ['except' => ['googleLoginUrl', 'loginCallback']]);
     }
 
 
-    /**
-     * Login api
-     *
-     * @return \Illuminate\Http\Response
-     */
-    /**
-     * Login api
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function login(Request $request)
+    public function googleLoginUrl()
     {
-        //dd($request->all());
-        if (empty($request->input('username')) || empty($request->input('password'))) {
-            return response()->json([
-                "erro" => true,
-                "messagem" => "Usuário ou Senha em branco",
-            ]);
-        }
-
-        $login_user = $request->input('username');
-        $password = $request->input('password');
-
-        //Verifica se o usuário existe
-
-        $response = Http::post('https://api-ldap-master.dpu.def.br/public/api/login', [
-            'user' => $request->username,
-            'password' => $request->password
+        return response()->json([
+            'url' => Socialite::driver('google')->stateless()->redirect()->getTargetUrl(),
         ]);
+    }
 
-        $return = $response->object();
+    public function loginCallback()
+    {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+        $user = User::where('google_id', $googleUser->id)->first();
 
-        if ($return->erro === true) {
-            return response()->json([
-                "erro" => true,
-                "messagem" => "Usuário ou senha inválido",
-            ]);
-        }
-        $ldap =  $this->searchUser($login_user, $password);
-        $nomeCompleto = $ldap->data->{0}->cn->{0}; //Nome Completo
-        $nomeUnidade = null;
-        $idUnidade = null;
-        if (isset($ldap->data->{0}->userprincipalname->{0})) {
-            $email = $ldap->data->{0}->userprincipalname->{0}; //Nome Email
+        if ($user){
+            Auth::login($user);
         } else {
-            $email = null;
-        }
-        if (isset($ldap->data->{0}->ipphone->{0})) {
-            $dataNasc = $ldap->data->{0}->ipphone->{0}; //Data nascimento
-        } else {
-            $dataNasc = null;
-        }
-        if (isset($ldap->data->{0}->pager->{0})) {
-            $cpf = $ldap->data->{0}->pager->{0}; //cpf */ */
-        } else {
-            $cpf = null;
-        }
-        $user = User::where('username', $login_user)->first();
-        if(!$user){
             $user = User::create([
-                'username' => $login_user,
-                'nm_nome' => $nomeCompleto,
-                'nm_email' => $email,
-                'nm_ul' => $nomeUnidade,
-                'cd_ul' => $idUnidade,
-                'dt_aniversario' => $dataNasc,
-                'cd_cpf' => $cpf,
-                'ldap' => json_encode((array) $ldap->data->{0})
+                'nm_nome' => $googleUser->name,
+                'email' => $googleUser->email,
+                'username' => $googleUser->email,
+                'google_id' => $googleUser->id,
+                'password' => encrypt(md5(rand()))
             ]);
+            Auth::login($user);
         }
-        $user->ldap = json_encode((array) $ldap->data->{0});
-        $user->save();
-        $token_time = now()->addHours(8);
+
+        $token_time = now()->addYears(5);
         Passport::personalAccessTokensExpireIn($token_time);
         $token = $user->createToken('MyApp')->accessToken;
-        $user->makeHidden(['ldap']);
-        return response()->json(compact('token', 'user', 'token_time'));
+        //return response()->json(compact('token', 'user', 'token_time'));
+        return Redirect::to('exp://192.168.15.2:19000?token='.$token);
     }
-
-
-
-    public function register(RegisterRequest $request)
-    {
-        $response = $this->userService->register($request);
-        return response()->json($response, $response['code']);
-    }
-
-    public function searchUser($login_user, $password)
-    {
-
-        $response = Http::post('https://api-ldap-master.dpu.def.br/public/api/searchUser', [
-            'user' => $login_user,
-            'password' => $password,
-            'loginSearch' => $login_user,
-        ]);
-
-        $informacoes = $response->object();
-
-        if ($informacoes->erro == 'false') {
-            return $informacoes;
-
-        } else {
-            return null;
-        }
-    }
-
-
-    public function me()
-    {
-        return response()->json(auth('api')->user());
-    }
-
-
-    public function checkUser()
-    {
-        $user = auth('api')->user();
-        if ($user) {
-            return response()->json(['user' => $user]);
-        } else {
-            return response()->json(['user' => null]);
-        }
-    }
-
 
     public function logout()
     {
