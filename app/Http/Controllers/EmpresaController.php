@@ -18,15 +18,10 @@ class EmpresaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function checkUsername(Request $request)
+    public function createEmpresa(Request $request)
     {
-        try {
-            $users = $this->user->checkUsername($request);
-            return ['response' => $users, 'code' => 200];
-        } catch (\Exception $ex) {
-            \Log::error($ex);
-            return ['response' => $ex->getMessage(), 'code' => $ex->getCode()];
-        }
+        $cargo = $this->promocaoService->createEmpresa($request);
+        return $cargo;
     }
 
 }

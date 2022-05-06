@@ -21,11 +21,14 @@ class FilialRepository
           ,1)  AS km_away")
         )
         ->with('empresa')
+        ->has('promocoes')
         //->having("km_away", "<", "?")
         ->orderBy("km_away")
-        ->setBindings([$request->input('latitude'), $request->input('longitude'), $request->input('latitude')])
-        ->get();
-        return $filiais;
+        ->setBindings([$request->input('latitude'), $request->input('longitude'), $request->input('latitude')]);
+         if($request->input('nm_categoria') !== ""){
+            $filiais->where('nm_categoria', 'LIKE', '%'.$request->input('nm_categoria')."%");
+        }
+        return $filiais->get();
     }
 
     public function show($id)
@@ -34,24 +37,10 @@ class FilialRepository
         return $cargo;
     }
 
-    public function create(Request $request)
+    public function createFilial(Request $request)
     {
-
         $cargo = Filial::create($request->all());
         return $cargo;
     }
 
-    public function update(Request $request, $id)
-    {
-        $cargo = Filial::where('id', $id)->update($request->all());
-        return $cargo;
-    }
-
-    public function destroy($id)
-    {
-        $cargo = Filial::where('id', $id)->first();
-        $cargo->st_cargo = false;
-        $cargo->save();
-        return $cargo;
-    }
 }

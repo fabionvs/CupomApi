@@ -18,39 +18,15 @@ class FilialService
 
     public function listPublic(Request $request)
     {
-        
+
         $cargo = $this->filialRepository->listPublic($request);
         return $cargo;
     }
 
-    public function show($id)
+    public function createFilial(Request $request)
     {
-        $cargo = $this->filialRepository->show($id);
+        $cargo = $this->filialRepository->createFilial($request);
         return $cargo;
     }
 
-    public function create(Request $request)
-    {
-        $cargo = $this->filialRepository->create($request);
-        return $cargo;
-    }
-
-    public function update(Request $request, $id)
-    {
-        $cargo = $this->filialRepository->update($request, $id);
-        return $cargo;
-    }
-
-    public function destroy($id)
-    {
-        $cargo = $this->filialRepository->destroy($id);
-        return $cargo;
-    }
-
-    public function listCargosAtivos(Request $request)
-    {
-        $request->input('st_cargo', true);
-        $cargo = $this->filialRepository->list($request, false);
-        return $cargo;
-    }
 }

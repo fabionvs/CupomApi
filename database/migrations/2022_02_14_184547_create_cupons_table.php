@@ -25,30 +25,20 @@ class CreateCuponsTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('tb_categorias', function (Blueprint $table) {
-            $table->id();
-            $table->string('nm_categoria')->unique();
-            $table->timestamps();
-        });
-
         Schema::create('tb_filial', function (Blueprint $table) {
             $table->id();
             $table->string('latitude')->unique();
             $table->string('longitude')->unique();
+            $table->string('ds_endereco')->unique();
             $table->boolean('st_ativo')->default(true);
-            $table->string('categoria');
             $table->bigInteger('empresa_id')->unsigned()->index();
             $table->foreign('empresa_id')->references('id')->on('tb_empresa')->onUpdate('cascade')->onDelete('cascade');
-
-            $table->bigInteger('categoria_id')->unsigned()->index();
-            $table->foreign('categoria_id')->references('id')->on('tb_categoria')->onUpdate('cascade')->onDelete('cascade');
-
+            $table->string('nm_categoria');
             $table->timestamps();
         });
         Schema::create('tb_promocao', function (Blueprint $table) {
             $table->id();
             $table->string('nm_nome')->unique();
-            $table->string('cd_cupom')->unique();
             $table->string('nr_porcentagem');
             $table->boolean('st_ativo')->default(false);
             $table->timestamp('dt_vencimento')->nullable();
@@ -60,12 +50,11 @@ class CreateCuponsTable extends Migration
 
         Schema::create('tb_cupons', function (Blueprint $table) {
             $table->id();
-            $table->string('nm_nome')->unique();
-            $table->string('cd_codigo');
             $table->string('cd_cupom')->unique();
             $table->boolean('st_ativo')->default(false);
             $table->boolean('st_consumido')->default(false);
-            $table->timestamp('dt_consumido');
+            $table->timestamp('dt_user')->nullable();
+            $table->timestamp('dt_consumido')->nullable();
             $table->timestamps();
 
             $table->bigInteger('promocao_id')->unsigned()->index();

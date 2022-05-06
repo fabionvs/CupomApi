@@ -42,17 +42,14 @@ class AuthController extends Controller
         $googleUser = Socialite::driver('google')->stateless()->user();
         $user = User::where('google_id', $googleUser->id)->first();
 
-        if ($user){
-            Auth::login($user);
-        } else {
+        if ($user == null){
             $user = User::create([
                 'nm_nome' => $googleUser->name,
                 'email' => $googleUser->email,
                 'username' => $googleUser->email,
                 'google_id' => $googleUser->id,
-                'password' => encrypt(md5(rand()))
+                'password' => encrypt(rand())
             ]);
-            Auth::login($user);
         }
 
         $token_time = now()->addYears(5);

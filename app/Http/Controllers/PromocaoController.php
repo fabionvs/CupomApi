@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Services\UserService;
+use App\Http\Services\PromocaoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class PromocaoController extends Controller
 {
-    public function __construct(UserService $userService)
+    public function __construct(PromocaoService $promocaoService)
     {
-        $this->user = $userService;
+        $this->promocaoService = $promocaoService;
     }
 
     /**
@@ -18,15 +18,44 @@ class PromocaoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function checkUsername(Request $request)
+    public function showPublic(Request $request)
     {
-        try {
-            $users = $this->user->checkUsername($request);
-            return ['response' => $users, 'code' => 200];
-        } catch (\Exception $ex) {
-            \Log::error($ex);
-            return ['response' => $ex->getMessage(), 'code' => $ex->getCode()];
-        }
+        $cargo = $this->promocaoService->showPublic($request);
+        return $cargo;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function pegar(Request $request)
+    {
+        $cargo = $this->promocaoService->pegar($request);
+        return $cargo;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function userCupons(Request $request)
+    {
+        $cargo = $this->promocaoService->userCupons($request);
+        return $cargo;
+    }
+
+
+     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createPromocao(Request $request)
+    {
+        $cargo = $this->promocaoService->createPromocao($request);
+        return $cargo;
     }
 
 }

@@ -9,11 +9,22 @@ class Cupons extends Model
 {
     use HasFactory;
 
+    protected $table = "tb_cupons";
+
     protected $fillable = [
-        'username',
-        'nm_nome',
-        'dt_aniversario',
-        'cpf',
-        'email',
+        'cd_cupom',
+        'st_ativo',
+        'st_consumido',
+        'dt_consumido',
+        'dt_user',
+        'promocao_id',
+        'user_id',
     ];
+
+    public function promocao()
+    {
+        return $this->belongsTo(Promocao::class);
+    }
+
+
 }

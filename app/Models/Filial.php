@@ -14,8 +14,9 @@ class Filial extends Model
         'latitude',
         'longitude',
         'st_ativo',
-        'categoria',
-        'empresa_id'
+        'nm_categoria',
+        'ds_endereco',
+        'empresa_id',
     ];
 
     public function empresa()
@@ -23,4 +24,8 @@ class Filial extends Model
         return $this->belongsTo(Empresa::class);
     }
 
+    public function promocoes()
+    {
+        return $this->hasMany(Promocao::class);
+    }
 }
