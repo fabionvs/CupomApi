@@ -56,8 +56,8 @@ class AuthController extends Controller
         Passport::personalAccessTokensExpireIn($token_time);
         $token = $user->createToken('MyApp')->accessToken;
         //return response()->json(compact('token', 'user', 'token_time'));
-        echo '<script>window.location.replace("exp://192.168.15.2:19000?token='.$token.');</script>';die;
-        //return Redirect::to('exp://192.168.15.2:19000?token='.$token);
+        //echo '<script>window.location.replace("exp://192.168.15.2:19000?token='.$token.');</script>';die;
+        return Redirect::to('exp://192.168.15.2:19000?token='.$token);
     }
 
     public function logout()
