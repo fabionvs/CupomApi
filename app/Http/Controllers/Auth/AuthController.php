@@ -56,8 +56,8 @@ class AuthController extends Controller
         Passport::personalAccessTokensExpireIn($token_time);
         $token = $user->createToken('MyApp')->accessToken;
         //return response()->json(compact('token', 'user', 'token_time'));
-        //return Redirect::to('cupomapp://?token='.$token);
-        return response('<script>window.location.replace("cupomapp://?token='.$token.'");</script>');
+        return Redirect::to('exp://192.168.15.2:19000?token='.$token);
+        //return response('<script>window.location.replace("cupomapp://?token='.$token.'");</script>');
     }
 
     public function logout()
