@@ -33,7 +33,7 @@ return [
     'google' => [
         'client_id' => '717194350876-0mug3ipgbu0bgc0rsa3ivr6sbj3cbkmv.apps.googleusercontent.com',
         'client_secret' => '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',
-        'redirect' => 'https://f682-2804-1b2-81-fe8f-9509-7383-a8c9-51a6.ngrok.io/api/auth/google/callback',
+        'redirect' => 'https://zenyv.com/api/auth/google/callback',
     ],
 
 ];
