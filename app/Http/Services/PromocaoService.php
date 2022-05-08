@@ -34,6 +34,12 @@ class PromocaoService
         return $cargo;
     }
 
+    public function pegar(Request $request)
+    {
+        $cargo = $this->promocaoRepository->pegar($request);
+        return $cargo;
+    }
+
     public function createPromocao(Request $request)
     {
         $cargo = $this->promocaoRepository->createPromocao($request);
