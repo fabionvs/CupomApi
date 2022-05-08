@@ -55,14 +55,41 @@ class PromocaoRepository
     public function createPromocao(Request $request)
     {
         $promocao = Promocao::create($request->all());
+        $promocao->update(['st_ativo' => true]);
 
-        for ($i = 1; $i <= $request->input('nr_cupons'); $i++) {
+        for ($i = 1; $i <= (int) $request->input('nr_cupons'); $i++) {
             $cupons[$i] = Cupons::create([
-                'cd_cupom' => substr(strtoupper(uniqid()), 0, 6),
+                'cd_cupom' => strtoupper(substr(md5(uniqid($promocao->id, true)), 0, 10)),
                 'st_ativo' => true,
                 'st_consumido' => false,
-                'promocao_id' => $promocao[1]['id']
+                'promocao_id' => $promocao->id
             ]);
         }
+        return $promocao;
     }
+    public function list(Request $request)
+    {
+        $promocoes = Promocao::withCount('cupons')
+        ->whereHas('filial.empresa.user', function ($query) {
+            return $query->where('id', Auth::user()->id);
+        })
+        ->orderBy('id', 'DESC')
+        ->paginate(15);
+        return $promocoes;
+    }
+
+
+    public function countVencidas(Request $request)
+    {
+        $promocoes = Promocao::withCount('cupons')
+        ->whereHas('filial.empresa.user', function ($query) {
+            return $query->where('id', Auth::user()->id);
+        })
+        ->where('dt_vencimento', '<', Carbon::now())
+        ->orderBy('id', 'DESC')
+        ->count();
+        return $promocoes;
+    }
+
+
 }

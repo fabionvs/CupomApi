@@ -30,4 +30,9 @@ class Promocao extends Model
         return $this->belongsTo(Filial::class);
     }
 
+    public function cupons()
+    {
+        return $this->hasMany(Cupons::class);
+    }
+
 }

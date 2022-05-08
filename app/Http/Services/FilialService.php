@@ -23,6 +23,13 @@ class FilialService
         return $cargo;
     }
 
+    public function listUserFiliais(Request $request)
+    {
+
+        $cargo = $this->filialRepository->listUserFiliais($request);
+        return $cargo;
+    }
+
     public function createFilial(Request $request)
     {
         $cargo = $this->filialRepository->createFilial($request);

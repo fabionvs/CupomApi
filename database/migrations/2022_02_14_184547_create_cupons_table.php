@@ -38,7 +38,7 @@ class CreateCuponsTable extends Migration
         });
         Schema::create('tb_promocao', function (Blueprint $table) {
             $table->id();
-            $table->string('nm_nome')->unique();
+            $table->string('nm_nome');
             $table->string('nr_porcentagem');
             $table->boolean('st_ativo')->default(false);
             $table->timestamp('dt_vencimento')->nullable();

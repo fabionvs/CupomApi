@@ -26,5 +26,11 @@ class Cupons extends Model
         return $this->belongsTo(Promocao::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
 
 }

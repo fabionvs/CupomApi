@@ -36,5 +36,15 @@ class FilialController extends Controller
         return $cargo;
     }
 
+    /**
+     * Lista filiais da empresa
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listUserFiliais(Request $request)
+    {
+        $cargo = $this->filialService->listUserFiliais($request);
+        return $cargo;
+    }
 
 }

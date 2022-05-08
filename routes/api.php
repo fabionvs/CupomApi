@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\FilialController;
 use App\Http\Controllers\PromocaoController;
+use App\Http\Controllers\CupomController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,13 +23,26 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('me', [AuthController::class, 'me']);
+
+    //Mobile
     Route::get('/list/public', [FilialController::class, 'listPublic']);
     Route::get('/list/public/cupons', [PromocaoController::class, 'showPublic']);
     Route::get('/cupom/pegar', [PromocaoController::class, 'pegar']);
     Route::get('/user/cupons', [PromocaoController::class, 'userCupons']);
-    Route::get('/create/empresa', [EmpresaController::class, 'createEmpresa']);
+
+
+    //Web
     Route::get('/create/filial', [FilialController::class, 'createFilial']);
+    Route::get('/cupons/empresa/list', [CupomController::class, 'empresaCupons']);
+    Route::get('/cupons/empresa/check-consumir', [CupomController::class, 'empresaCupons']);
+    Route::post('/cupons/empresa/consumir', [CupomController::class, 'consumirCupons']);
+    Route::resource('/promocoes', PromocaoController::class);
+    Route::get('/filiais/user/ativas', [FilialController::class, 'listUserFiliais']);
+    Route::get('/dashboard', [UserController::class, 'dashboard']);
 });
+
+
 Route::get('auth/google', [AuthController::class, 'googleLoginUrl']);
 Route::get('auth/google/callback', [AuthController::class, 'loginCallback']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);

@@ -22,22 +22,15 @@ class PromocaoService
         return $cargo;
     }
 
-    public function pegar(Request $request)
+    public function list(Request $request)
     {
-        $promocao = $this->promocaoRepository->pegar($request);
-        return $promocao;
-    }
-
-    public function userCupons(Request $request)
-    {
-        $promocao = $this->promocaoRepository->userCupons($request);
-        return $promocao;
+        $cargo = $this->promocaoRepository->list($request);
+        return $cargo;
     }
 
     public function createPromocao(Request $request)
     {
-        $promocao = $this->promocaoRepository->createPromocao($request);
-        return $promocao;
+        $cargo = $this->promocaoRepository->createPromocao($request);
+        return $cargo;
     }
-
 }

@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function __construct(UserService $userService)
     {
-        $this->user = $userService;
+        $this->userService = $userService;
     }
 
     /**
@@ -18,15 +18,10 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function checkUsername(Request $request)
+    public function dashboard(Request $request)
     {
-        try {
-            $users = $this->user->checkUsername($request);
-            return ['response' => $users, 'code' => 200];
-        } catch (\Exception $ex) {
-            \Log::error($ex);
-            return ['response' => $ex->getMessage(), 'code' => $ex->getCode()];
-        }
+        $stats = $this->userService->dashboard($request);
+        return $stats;
     }
 
 }

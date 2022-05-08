@@ -48,13 +48,24 @@ class PromocaoController extends Controller
 
 
      /**
-     * Display a listing of the resource.
+     * Cria promoção
      *
      * @return \Illuminate\Http\Response
      */
-    public function createPromocao(Request $request)
+    public function store(Request $request)
     {
         $cargo = $this->promocaoService->createPromocao($request);
+        return $cargo;
+    }
+
+    /**
+     * Lista as promoções do usuário logado
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $cargo = $this->promocaoService->list($request);
         return $cargo;
     }
 

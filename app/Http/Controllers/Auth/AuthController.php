@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Empresa;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,7 @@ use Laravel\Passport\Passport;
 use Validator;
 use Socialite;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\File;
 
 class AuthController extends Controller
 {
@@ -26,7 +28,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['googleLoginUrl', 'loginCallback']]);
+        $this->middleware('auth:api', ['except' => ['googleLoginUrl', 'loginCallback', 'login', 'register']]);
     }
 
 
@@ -58,6 +60,54 @@ class AuthController extends Controller
         //return response()->json(compact('token', 'user', 'token_time'));
         //return Redirect::to('cupomapp://?token='.$token);
         return response('<script>window.location.replace("cupomapp://?token='.$token.'");</script>');
+    }
+
+    /**
+     * Login api
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+        $credentials = request(['email', 'password']);
+
+        if (! $token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+        $token_time = now()->addHours(24);
+        Passport::personalAccessTokensExpireIn($token_time);
+        $user = auth()->user();
+        $token = $user->createToken('MyApp')->accessToken;
+        return response()->json(compact('token', 'user', 'token_time'));
+    }
+
+    public function register(RegisterRequest $request)
+    {
+
+        $user = User::create([
+            'username' => $request->input('email'),
+            'nm_nome' => $request->input('nm_nome'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password'))
+        ]);
+
+        $image = $request->input("avatar");  // your base64 encoded
+        $image = str_replace('data:image/png;base64,', '', $image);
+        $image = str_replace(' ', '+', $image);
+        $imageName = $user->id.'.'.'png';
+        File::put(public_path(). "/images/" . $imageName, base64_decode($image));
+
+        $empresa = Empresa::create([
+            'nm_nome' => $request->input('nm_nome'),
+             'nr_cnpj' => $request->input('nr_cnpj'),
+             'logo' => 'https://api.zenyv.com/images/'.$imageName,
+             'user_id' => $user->id
+        ]);
+
+        $token_time = now()->addHours(24);
+        Passport::personalAccessTokensExpireIn($token_time);
+        $token = $user->createToken('MyApp')->accessToken;
+        return response()->json(compact('token', 'user', 'token_time'));
     }
 
     public function logout()

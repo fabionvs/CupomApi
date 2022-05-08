@@ -5,6 +5,7 @@ namespace App\Http\Repository;
 use App\Models\Filial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 class FilialRepository
 {
 
@@ -42,5 +43,16 @@ class FilialRepository
         $cargo = Filial::create($request->all());
         return $cargo;
     }
+
+    public function listUserFiliais($id)
+    {
+        $filiais = Filial::whereHas('empresa.user', function ($query) {
+            return $query->where('id', Auth::user()->id);
+        })
+        ->where('st_ativo', true)
+        ->get();
+        return $filiais;
+    }
+
 
 }

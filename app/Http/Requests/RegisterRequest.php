@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AtoRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +26,10 @@ class AtoRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'nr_ato' => 'required|unique:tb_ato',
-            'ds_descricao' => 'required|unique:tb_ato',
+            'nr_cnpj' => 'required|unique:tb_empresa',
+            'nm_nome' => 'required|unique:tb_empresa',
+            'email' => 'required|unique:tb_users',
         ];
-        if (in_array($this->method(), ['PUT', 'PATCH'])) {
-            $rules = [];
-        }
         return $rules;
 
     }
@@ -43,10 +41,12 @@ class AtoRequest extends FormRequest
     public function messages()
     {
         return [
-            'nr_ato.required' => 'Número do ato é obrigatório!',
-            'nr_ato.unique' => 'Número do ato já existe!',
-            'ds_descricao.required' => 'Descrição do ato é obrigatória!',
-            'ds_descricao.unique' => 'Descrição do ato já existe!',
+            'nr_cnpj.required' => 'Número do CNPJ obrigatório!',
+            'nr_cnpj.unique' => 'CNPJ é único!',
+            'email.required' => 'Email é obrigatória!',
+            'email.unique' => 'Email já existe!',
+            'nm_nome.required' => 'Nome é obrigatório!',
+            'nm_nome.unique' => 'Nome já existe!',
         ];
     }
 
