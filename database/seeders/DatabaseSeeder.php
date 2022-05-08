@@ -38,14 +38,14 @@ class DatabaseSeeder extends Seeder
         $filial[1] = Filial::create([
             'ds_endereco' => 'SQS 201 Bloco B - Asa Sul',
             'latitude' => '-15.8169455',
-            'longitude' => '-47.900049',
+            'longitude' => '-47.400049',
             'empresa_id' => $empresa->id,
             'nm_categoria' => 'Cervejaria/Hamburgueria'
             ]);
         $filial[2] = Filial::create([
             'ds_endereco' => 'Rua Maria Teste 123',
             'latitude' => '-16.8169455',
-            'longitude' => '-48.900049',
+            'longitude' => '-47.550049',
             'empresa_id' => $empresa->id,
             'nm_categoria' => 'Cervejaria/Hamburgueria'
         ]);

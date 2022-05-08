@@ -16,6 +16,12 @@ class PromocaoService
         $this->promocaoRepository = $promocaoRepository;
     }
 
+    public function userCupons(Request $request)
+    {
+        $cargo = $this->promocaoRepository->userCupons($request);
+        return $cargo;
+    }
+
     public function showPublic(Request $request)
     {
         $cargo = $this->promocaoRepository->showPublic($request);
