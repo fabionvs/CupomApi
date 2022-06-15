@@ -3,6 +3,7 @@
 namespace App\Http\Repository;
 
 use App\Models\Filial;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -38,9 +39,28 @@ class FilialRepository
         return $cargo;
     }
 
-    public function createFilial(Request $request)
+    public function update($id, $request)
     {
-        $cargo = Filial::create($request->all());
+        $cargo = Filial::where('id', $id)->first();
+        $cargo->update([
+            'latitude' => $request->input('latitude'),
+            'longitude' => $request->input('longitude'),
+            'nm_categoria' => $request->input('nm_categoria'),
+            'ds_endereco' => $request->input('ds_endereco')
+        ]);
+        return $cargo;
+    }
+
+    public function create(Request $request)
+    {
+        $empresa = Empresa::where('user_id', Auth::user()->id)->first();
+        $cargo = Filial::create([
+            'latitude' => $request->input('latitude'),
+            'longitude' => $request->input('longitude'),
+            'nm_categoria' => $request->input('nm_categoria'),
+            'ds_endereco' => $request->input('ds_endereco'),
+            'empresa_id' => $empresa->id
+        ]);
         return $cargo;
     }
 
@@ -50,7 +70,7 @@ class FilialRepository
             return $query->where('id', Auth::user()->id);
         })
         ->where('st_ativo', true)
-        ->get();
+        ->paginate(15);
         return $filiais;
     }
 

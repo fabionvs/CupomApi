@@ -25,14 +25,36 @@ class FilialController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $cargo = $this->filialService->show($id);
+        return $cargo;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id, Request $request)
+    {
+        $cargo = $this->filialService->update($id, $request);
+        return $cargo;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function createFilial(CargoRequest $request)
+    public function create(Request $request)
     {
-        $cargo = $this->filialService->createFilial($request);
+        $cargo = $this->filialService->create($request);
         return $cargo;
     }
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class CupomRepository
 {
 
-    public function empresaCupons(Request $request)
+    public function checkCupom(Request $request)
     {
         $cupom = Cupons::with('promocao')
         ->with('user')
@@ -44,14 +44,16 @@ class CupomRepository
     }
 
 
-    public function userCupons(Request $request)
+    public function userCupons(Request $request, $count = false)
     {
         $cupom = Cupons::with('promocao')
         ->whereHas('promocao.filial.empresa.user', function ($query) {
             return $query->where('id', Auth::user()->id);
-        })
-        ->count();
-        return $cupom;
+        });
+        if($count){
+            return $cupom->count();
+        }
+        return $cupom->paginate(100);
     }
 
     public function userUsedCupons(Request $request)

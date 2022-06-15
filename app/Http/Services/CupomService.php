@@ -16,10 +16,16 @@ class CupomService
         $this->cupomRepository = $cupomRepository;
     }
 
-    public function empresaCupons(Request $request)
+    public function checkCupom(Request $request)
     {
-        $cargo = $this->cupomRepository->empresaCupons($request);
+        $cargo = $this->cupomRepository->checkCupom($request);
         return $cargo;
+    }
+
+    public function userCupons(Request $request)
+    {
+        $cargo = $this->cupomRepository->userCupons($request);
+        return response()->json($cargo);
     }
 
     public function consumirCupons(Request $request)

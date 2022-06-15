@@ -17,9 +17,20 @@ class CupomController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function empresaCupons(Request $request)
+    public function checkCupom(Request $request)
     {
-        $cargo = $this->cupomService->empresaCupons($request);
+        $cargo = $this->cupomService->checkCupom($request);
+        return $cargo;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function userCupons(Request $request)
+    {
+        $cargo = $this->cupomService->userCupons($request);
         return $cargo;
     }
 

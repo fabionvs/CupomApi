@@ -59,7 +59,7 @@ class AuthController extends Controller
         $token = $user->createToken('MyApp')->accessToken;
         //return response()->json(compact('token', 'user', 'token_time'));
         //return Redirect::to('cupomapp://?token='.$token);
-        return response('<script>window.location.replace("cupomapp://?token='.$token.'");</script>');
+        return response('<script>window.location.replace("exp://192.168.0.5:19000?token='.$token.'");</script>');
     }
 
     /**

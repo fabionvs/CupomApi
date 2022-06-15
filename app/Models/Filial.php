@@ -11,11 +11,11 @@ class Filial extends Model
     protected $table = "tb_filial";
 
     protected $fillable = [
+        'ds_endereco',
         'latitude',
         'longitude',
         'st_ativo',
         'nm_categoria',
-        'ds_endereco',
         'empresa_id',
     ];
 

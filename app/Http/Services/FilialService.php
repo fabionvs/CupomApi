@@ -16,6 +16,18 @@ class FilialService
         $this->filialRepository = $filialRepository;
     }
 
+    public function show($id)
+    {
+        $cargo = $this->filialRepository->show($id);
+        return $cargo;
+    }
+
+    public function update($id, $request)
+    {
+        $cargo = $this->filialRepository->update($id, $request);
+        return $cargo;
+    }
+
     public function listPublic(Request $request)
     {
 
@@ -30,9 +42,9 @@ class FilialService
         return $cargo;
     }
 
-    public function createFilial(Request $request)
+    public function create(Request $request)
     {
-        $cargo = $this->filialRepository->createFilial($request);
+        $cargo = $this->filialRepository->create($request);
         return $cargo;
     }
 

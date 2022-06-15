@@ -33,11 +33,14 @@ Route::middleware('auth:api')->group(function () {
 
     //Web
     Route::get('/create/filial', [FilialController::class, 'createFilial']);
-    Route::get('/cupons/empresa/list', [CupomController::class, 'empresaCupons']);
-    Route::get('/cupons/empresa/check-consumir', [CupomController::class, 'empresaCupons']);
+    Route::get('/cupons/empresa/list', [CupomController::class, 'userCupons']);
+    Route::get('/cupons/empresa/check-consumir', [CupomController::class, 'checkCupom']);
     Route::post('/cupons/empresa/consumir', [CupomController::class, 'consumirCupons']);
     Route::resource('/promocoes', PromocaoController::class);
     Route::get('/filiais/user/ativas', [FilialController::class, 'listUserFiliais']);
+    Route::get('/filiais/{id}', [FilialController::class, 'show']);
+    Route::put('/filiais/{id}', [FilialController::class, 'update']);
+    Route::post('/filiais', [FilialController::class, 'create']);
     Route::get('/dashboard', [UserController::class, 'dashboard']);
 });
 
