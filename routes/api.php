@@ -21,12 +21,12 @@ use App\Http\Controllers\UserController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 Route::middleware('auth:api')->group(function () {
 
     //Mobile
-    Route::get('/list/public', [FilialController::class, 'listPublic']);
     Route::get('/list/public/cupons', [PromocaoController::class, 'showPublic']);
+    Route::get('/list/public', [FilialController::class, 'listPublic']);
+    Route::get('/list/categories', [FilialController::class, 'listCategories']);
     Route::get('/cupom/pegar', [PromocaoController::class, 'pegar']);
     Route::get('/user/cupons', [PromocaoController::class, 'userCupons']);
 

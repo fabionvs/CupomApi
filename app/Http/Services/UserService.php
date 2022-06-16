@@ -19,8 +19,8 @@ class UserService
 
     public function dashboard(Request $request)
     {
-        $userCupons = $this->cupomRepository->userCupons($request);
-        $usedCupons = $this->cupomRepository->userUsedCupons($request);
+        $userCupons = $this->cupomRepository->userCupons($request, true);
+        $usedCupons = $this->cupomRepository->userUsedCupons($request, false);
         $pctUsed = (100 * $usedCupons) / $userCupons;
         $consumedCupons = $this->cupomRepository->userConsumedCupons($request);
         $pctConsumed = (100 * $consumedCupons) / $userCupons;

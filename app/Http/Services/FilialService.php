@@ -35,10 +35,17 @@ class FilialService
         return $cargo;
     }
 
+    public function listCategories(Request $request)
+    {
+
+        $cargo = $this->filialRepository->listCategories($request);
+        return $cargo;
+    }
+
     public function listUserFiliais(Request $request)
     {
 
-        $cargo = $this->filialRepository->listUserFiliais($request);
+        $cargo = $this->filialRepository->listUserFiliais($request, true);
         return $cargo;
     }
 

@@ -25,11 +25,16 @@ class FilialRepository
         ->with('empresa')
         ->has('promocoes')
         //->having("km_away", "<", "?")
-        ->orderBy("km_away")
         ->setBindings([$request->input('latitude'), $request->input('longitude'), $request->input('latitude')]);
          if($request->input('nm_categoria') !== ""){
             $filiais->where('nm_categoria', 'LIKE', '%'.$request->input('nm_categoria')."%");
         }
+        return $filiais->orderBy("km_away")->get();
+    }
+
+    public function listCategories(Request $request)
+    {
+        $filiais = Filial::select('nm_categoria')->distinct()->where('nm_categoria', 'LIKE', '%'.$request->input('nm_categoria')."%")->orderBy('nm_categoria');
         return $filiais->get();
     }
 
@@ -64,14 +69,16 @@ class FilialRepository
         return $cargo;
     }
 
-    public function listUserFiliais($id)
+    public function listUserFiliais($id, $paginate = false)
     {
         $filiais = Filial::whereHas('empresa.user', function ($query) {
             return $query->where('id', Auth::user()->id);
         })
-        ->where('st_ativo', true)
-        ->paginate(15);
-        return $filiais;
+        ->where('st_ativo', true);
+        if($paginate){
+            return $filiais->paginate(15);
+        }
+        return $filiais->get();
     }
 
 

@@ -47,6 +47,17 @@ class FilialController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function listCategories(Request $request)
+    {
+        $cargo = $this->filialService->listCategories($request);
+        return $cargo;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
