@@ -17,7 +17,6 @@ use Validator;
 use Socialite;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -92,12 +91,13 @@ class AuthController extends Controller
             'password' => Hash::make($request->input('password'))
         ]);
 
-        $image = $request->input("avatar");  // your base64 encoded
+        $image = $request->image;  // your base64 encoded
         $image = str_replace('data:image/png;base64,', '', $image);
         $image = str_replace(' ', '+', $image);
+        $imageName = str_random(10) . '.png';
 
         $imageName = $user->id.'.'.'png';
-        Storage::disk('public')->put($imageName, base64_decode($image));
+        file_put_contents(public_path(). "/images/" . $imageName, base64_decode($image));
 
         $empresa = Empresa::create([
             'nm_nome' => $request->input('nm_nome'),
